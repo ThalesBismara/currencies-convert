@@ -1,38 +1,49 @@
 import requests
 
+moedas = {
+    "$": "USD",
+    "€": "EUR",
+    "¥": "JPY",
+    "£": "GBP"
+}
+
 resposta = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
 
 dados = resposta.json()
 
-cotacao = dados["rates"]["BRL"]
-cotacao1 = dados["rates"]["EUR"]
-cotacao2 = dados["rates"]["JPY"]
-cotacao3 = dados["rates"]["GBP"]
+cotacao_brl = dados["rates"]["BRL"]
 
-print(cotacao)
-
-moeda = input("Digite qual moeda voce quer converter seus reais, utilize SOMENTE os cifrões, $,€,¥,£: ")
+try:
+ moeda = input("Digite qual moeda voce quer converter seus reais, utilize SOMENTE os cifrões, $,€,¥,£: ")
 
 
-if moeda == "$":
+ if moeda == "$":
     qnt = float(input(" Quantos reais voce quer converter para dólares? "))
-    novo_valor = qnt / cotacao
-    print("O valor de", qnt,"reais ", "em dólares é de",  novo_valor)
+    novo_valor = cotacao_brl / dados["rates"][moedas[moeda]]
+    convert = qnt / novo_valor
+    print(convert)
 
-elif moeda == "€":
+ elif moeda == "€":
     qnt = float(input(" Quantos reais voce quer converter para euros? "))
-    novo_valor = qnt * cotacao
-    valor_euro = novo_valor / cotacao1
-    print("O valor de", qnt,"reais ", "em euros é de",  valor_euro)
+    novo_valor = qnt / cotacao_brl
+    convert = novo_valor * dados["rates"][moedas[moeda]]
+    print(convert)
 
-elif moeda == "¥":
+ elif moeda == "¥":
     qnt = float(input(" Quantos reais voce quer converter para Yenes? "))
-    novo_valor = qnt / cotacao
-    valor_yene = novo_valor * cotacao2
-    print("O valor de", qnt,"reais ", "em yenes é de", valor_yene)
+    novo_valor = qnt / cotacao_brl
+    convert = novo_valor * dados["rates"][moedas[moeda]]
+    print(convert)
 
-else:
+ elif moeda =="£":
     qnt = float(input(" Quantos reais voce quer converter para Libras? "))
-    novo_valor = qnt * cotacao
-    valor_libra = novo_valor / cotacao3
-    print("O valor de", qnt,"reais ", "em Libras é de",  valor_libra)
+    novo_valor = qnt / cotacao_brl
+    convert = novo_valor * dados["rates"][moedas[moeda]]
+    print(convert)
+ else:
+    print("Verifique os dados inseridos")
+
+except ValueError:
+   print("Digite uma moeda válida")
+
+
